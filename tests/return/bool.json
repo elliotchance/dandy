@@ -1,0 +1,30 @@
+{
+  "Functions": {
+    "False": {
+      "Type": "bool",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "8: return"
+          ],
+          "Params": {},
+          "Result": false
+        }
+      }
+    },
+    "True": {
+      "Type": "bool",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "4: return"
+          ],
+          "Params": {},
+          "Result": true
+        }
+      }
+    }
+  }
+}

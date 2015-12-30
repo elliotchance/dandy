@@ -33,6 +33,17 @@ func atoi(str string) int {
 	return x
 }
 
+func atob(str string) bool {
+	switch str {
+	case "true":
+		return true
+	case "false":
+		return false
+	}
+
+	panic(str)
+}
+
 type IntDomain struct {
 	min, max, impossible int
 }
@@ -42,7 +53,7 @@ type Path struct {
 	conditionDescriptions []string
 	domains               map[string]IntDomain
 	Params                map[string]int
-  Result                int
+  Result                interface{}
 }
 
 type Function struct {
@@ -347,7 +358,7 @@ func writeString(fo *os.File, str string) {
 }
 
 func generateIntropection(lines []string, file *File) map[string]interface{} {
-	tmpFile := "tests/if2_tmp.go"
+	tmpFile := "tests/tmp.go"
   fo, err := os.Create(tmpFile)
   if err != nil {
       panic(err)
@@ -374,7 +385,8 @@ func generateIntropection(lines []string, file *File) map[string]interface{} {
         writeString(fo, fmt.Sprintf("%v", paramValue))
       }
       writeString(fo, "))\n")
-      writeString(fo, fmt.Sprintf("\tresults[\"%s\"] = string(b)\n", pathName))
+      writeString(fo, fmt.Sprintf("\tresults[\"%s:%s\"] = string(b)\n",
+				functionName, pathName))
     }
   }
   writeString(fo, "\n\tb, _ = json.MarshalIndent(results, \"\", \"  \")\n")
@@ -394,7 +406,15 @@ func generateIntropection(lines []string, file *File) map[string]interface{} {
 	for functionName, function := range file.Functions {
 		for pathName := range function.Paths {
 			ref := file.Functions[functionName].Paths[pathName]
-			ref.Result = atoi(results[pathName].(string))
+			result := results[functionName + ":" + pathName].(string)
+			switch function.Type {
+			case "int":
+				ref.Result = atoi(result)
+			case "bool":
+				ref.Result = atob(result)
+			default:
+				panic(function.Type)
+			}
 			file.Functions[functionName].Paths[pathName] = ref
 		}
 	}
