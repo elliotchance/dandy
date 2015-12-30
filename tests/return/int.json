@@ -1,0 +1,17 @@
+{
+  "Functions": {
+    "A": {
+      "Type": "int",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "4: return"
+          ],
+          "Params": {},
+          "Result": 100
+        }
+      }
+    }
+  }
+}

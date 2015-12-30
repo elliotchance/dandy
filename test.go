@@ -73,9 +73,11 @@ func runSuite(name string) (int, int) {
 
 func runSuites() (int, int) {
 	var failedCount, passedCount int
+	suites, err := ioutil.ReadDir("tests")
+	check(err)
 
-	for _, suite := range []string{"failures", "if-statement"} {
-		failed, passed := runSuite(suite)
+	for _, suite := range suites {
+		failed, passed := runSuite(suite.Name())
 		failedCount += failed
 		passedCount += passed
 	}
