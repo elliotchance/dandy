@@ -44,6 +44,12 @@ func atob(str string) bool {
 	panic(str)
 }
 
+func atof(str string) float64 {
+	x, err := strconv.ParseFloat(str, 64)
+	check(err)
+	return x
+}
+
 type IntDomain struct {
 	min, max, impossible int
 }
@@ -412,6 +418,8 @@ func generateIntropection(lines []string, file *File) map[string]interface{} {
 				ref.Result = atoi(result)
 			case "bool":
 				ref.Result = atob(result)
+			case "float32", "float64":
+				ref.Result = atof(result)
 			default:
 				panic(function.Type)
 			}

@@ -1,0 +1,30 @@
+{
+  "Functions": {
+    "Float32": {
+      "Type": "float32",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "4: return"
+          ],
+          "Params": {},
+          "Result": 1.32
+        }
+      }
+    },
+    "Float64": {
+      "Type": "float64",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "8: return"
+          ],
+          "Params": {},
+          "Result": 1.64
+        }
+      }
+    }
+  }
+}
