@@ -21,6 +21,18 @@ func ucFirst(str string) string {
 	return strings.ToUpper(str[0:1]) + str[1:]
 }
 
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+func atoi(str string) int {
+	x, err := strconv.Atoi(str)
+	check(err)
+	return x
+}
+
 type IntDomain struct {
 	min, max, impossible int
 }
@@ -335,7 +347,8 @@ func writeString(fo *os.File, str string) {
 }
 
 func generateIntropection(lines []string, file *File) map[string]interface{} {
-  fo, err := os.Create("tests/if2_tmp.go")
+	tmpFile := "tests/if2_tmp.go"
+  fo, err := os.Create(tmpFile)
   if err != nil {
       panic(err)
   }
@@ -368,7 +381,7 @@ func generateIntropection(lines []string, file *File) map[string]interface{} {
 	writeString(fo, "\tos.Stdout.Write(b)\n")
   writeString(fo, "}\n")
 
-  out, err := exec.Command("go", "run", "tests/if2_tmp.go").Output()
+  out, err := exec.Command("go", "run", tmpFile).Output()
   if err != nil {
     panic(err)
   }
@@ -377,6 +390,16 @@ func generateIntropection(lines []string, file *File) map[string]interface{} {
   if err = json.Unmarshal(out, &results); err != nil {
     panic(err)
   }
+
+	for functionName, function := range file.Functions {
+		for pathName := range function.Paths {
+			ref := file.Functions[functionName].Paths[pathName]
+			ref.Result = atoi(results[pathName].(string))
+			file.Functions[functionName].Paths[pathName] = ref
+		}
+	}
+
+	os.Remove(tmpFile)
 
   return results
 }
@@ -420,6 +443,8 @@ func main() {
 		out.Functions[decl.(*ast.FuncDecl).Name.Name] = Function{name, params, paths}
 	}
 
+  generateIntropection(lines, &out)
+
 	b, err := json.MarshalIndent(out, "", "  ")
 	if err != nil {
 		fmt.Println("error:", err)
@@ -427,6 +452,5 @@ func main() {
 	os.Stdout.Write(b)
   fmt.Printf("\n\n")
 
-  results := generateIntropection(lines, &out)
-  generateTests(results, &out)
+  //generateTests(results, &out)
 }

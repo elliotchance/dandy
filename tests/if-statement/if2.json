@@ -1,0 +1,44 @@
+{
+  "Functions": {
+    "Sign": {
+      "Type": "int",
+      "Args": {
+        "x": "int"
+      },
+      "Paths": {
+        "": {
+          "Steps": [
+            "4: if x \u003c 0 {",
+            "7: if x \u003e 0 {",
+            "11: return"
+          ],
+          "Params": {
+            "x": 0
+          },
+          "Result": 3
+        },
+        "XIsGreaterThan0": {
+          "Steps": [
+            "4: if x \u003c 0 {",
+            "7: if x \u003e 0 {",
+            "8: return"
+          ],
+          "Params": {
+            "x": 1
+          },
+          "Result": 2
+        },
+        "XIsLessThan0": {
+          "Steps": [
+            "4: if x \u003c 0 {",
+            "5: return"
+          ],
+          "Params": {
+            "x": -1
+          },
+          "Result": 1
+        }
+      }
+    }
+  }
+}
