@@ -1,0 +1,30 @@
+{
+  "Functions": {
+    "String": {
+      "Type": "string",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "4: return"
+          ],
+          "Params": {},
+          "Result": "hello"
+        }
+      }
+    },
+    "StringWithEscapes": {
+      "Type": "string",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "8: return"
+          ],
+          "Params": {},
+          "Result": "hel\"lo"
+        }
+      }
+    }
+  }
+}

@@ -17,6 +17,37 @@ import (
 	"time"
 )
 
+func decodeJsonString(theJson string) string {
+	var realString string
+	err := json.Unmarshal([]byte(theJson), &realString)
+	check(err)
+
+	return realString
+}
+
+// Convert the rawValue which will be a string into a value for the type
+// provided. For example, if the rawValue is "123" and we need a uint32 it would
+// return 123 as an integer.
+func getValueForType(typeName string, rawValue string) interface{} {
+	switch typeName {
+	case "int", "uint", "uintptr", "byte", "rune",
+		"int8", "int16", "int32", "int64",
+		"uint8", "uint16", "uint32", "uint64":
+		return atoi(rawValue)
+	case "bool":
+		return atob(rawValue)
+	case "float32", "float64":
+		return atof(rawValue)
+	case "string":
+		// The rawValue will be marshalled as JSON, we have to unmarshal it for a
+		// string since it will contain escape sequences.
+		return decodeJsonString(rawValue)
+	}
+
+	notSupported(typeName)
+	return nil
+}
+
 func notSupported(feature string) {
 	panic("'" + feature + "' is not supported.")
 }
@@ -416,19 +447,7 @@ func generateIntropection(lines []string, file *File) map[string]interface{} {
 		for pathName := range function.Paths {
 			ref := file.Functions[functionName].Paths[pathName]
 			result := results[functionName+":"+pathName].(string)
-			switch function.Type {
-			case "int", "int8", "int16", "int32", "int64",
-				"uint8", "uint16", "uint32", "uint64":
-				ref.Result = atoi(result)
-			case "bool":
-				ref.Result = atob(result)
-			case "float32", "float64":
-				ref.Result = atof(result)
-			case "complex64", "complex128":
-				notSupported(function.Type)
-			default:
-				panic(function.Type)
-			}
+			ref.Result = getValueForType(function.Type, result)
 			file.Functions[functionName].Paths[pathName] = ref
 		}
 	}

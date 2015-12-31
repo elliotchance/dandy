@@ -1,15 +1,28 @@
 {
   "Functions": {
+    "Byte": {
+      "Type": "byte",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "37: return"
+          ],
+          "Params": {},
+          "Result": 109
+        }
+      }
+    },
     "Int": {
       "Type": "int",
       "Args": {},
       "Paths": {
         "": {
           "Steps": [
-            "4: return"
+            "49: return"
           ],
           "Params": {},
-          "Result": 100
+          "Result": 111
         }
       }
     },
@@ -19,7 +32,7 @@
       "Paths": {
         "": {
           "Steps": [
-            "12: return"
+            "8: return"
           ],
           "Params": {},
           "Result": 102
@@ -32,7 +45,7 @@
       "Paths": {
         "": {
           "Steps": [
-            "16: return"
+            "12: return"
           ],
           "Params": {},
           "Result": 103
@@ -45,7 +58,7 @@
       "Paths": {
         "": {
           "Steps": [
-            "20: return"
+            "16: return"
           ],
           "Params": {},
           "Result": 104
@@ -58,10 +71,36 @@
       "Paths": {
         "": {
           "Steps": [
-            "8: return"
+            "4: return"
           ],
           "Params": {},
           "Result": 101
+        }
+      }
+    },
+    "Rune": {
+      "Type": "rune",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "42: return"
+          ],
+          "Params": {},
+          "Result": 110
+        }
+      }
+    },
+    "Uint": {
+      "Type": "uint",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "53: return"
+          ],
+          "Params": {},
+          "Result": 112
         }
       }
     },
@@ -71,7 +110,7 @@
       "Paths": {
         "": {
           "Steps": [
-            "28: return"
+            "24: return"
           ],
           "Params": {},
           "Result": 106
@@ -84,7 +123,7 @@
       "Paths": {
         "": {
           "Steps": [
-            "32: return"
+            "28: return"
           ],
           "Params": {},
           "Result": 107
@@ -97,7 +136,7 @@
       "Paths": {
         "": {
           "Steps": [
-            "36: return"
+            "32: return"
           ],
           "Params": {},
           "Result": 108
@@ -110,10 +149,23 @@
       "Paths": {
         "": {
           "Steps": [
-            "24: return"
+            "20: return"
           ],
           "Params": {},
           "Result": 105
+        }
+      }
+    },
+    "Uintptr": {
+      "Type": "uintptr",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "57: return"
+          ],
+          "Params": {},
+          "Result": 113
         }
       }
     }

@@ -1,9 +1,5 @@
 package main
 
-func Int() int {
-  return 100
-}
-
 func Int8() int8 {
   return 101
 }
@@ -34,4 +30,29 @@ func Uint32() uint32 {
 
 func Uint64() uint64 {
   return 108
+}
+
+// byte is an alias for uint8
+func Byte() byte {
+  return 109
+}
+
+// rune is an alias for int32
+func Rune() rune {
+  return 110
+}
+
+// There is also a set of predeclared numeric types with implementation-specific
+// sizes:
+
+func Int() int {
+  return 111
+}
+
+func Uint() uint {
+  return 112
+}
+
+func Uintptr() uintptr {
+  return 113
 }
