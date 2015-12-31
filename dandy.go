@@ -11,11 +11,15 @@ import (
 	"io"
 	"math/rand"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 	"time"
-  "os/exec"
 )
+
+func notSupported(feature string) {
+	panic("'" + feature + "' is not supported.")
+}
 
 func ucFirst(str string) string {
 	return strings.ToUpper(str[0:1]) + str[1:]
@@ -59,7 +63,7 @@ type Path struct {
 	conditionDescriptions []string
 	domains               map[string]IntDomain
 	Params                map[string]int
-  Result                interface{}
+	Result                interface{}
 }
 
 type Function struct {
@@ -148,7 +152,7 @@ func valueIsLegal(domain IntDomain, value int) bool {
 }
 
 func random(min, max int) int {
-	return rand.Intn(max - min) + min
+	return rand.Intn(max-min) + min
 }
 
 func calculateParam(param IntDomain) int {
@@ -169,8 +173,8 @@ func calculateParam(param IntDomain) int {
 	// permissible values. Starting with some predefined values.
 	valuesToTry := []int{
 		0,
-    1,
-    -1,
+		1,
+		-1,
 		param.min,
 		param.max,
 		param.min + 1,
@@ -344,82 +348,84 @@ All:
 }
 
 func generateTests(results map[string]interface{}, file *File) {
-  for functionName, function := range file.Functions {
-    for pathName, path := range function.Paths {
-      fmt.Printf("func Test%s%s(t *testing.T) {\n", functionName, pathName)
-      fmt.Printf("\tresult := %s(", functionName)
-      for _, paramValue := range path.Params {
-        fmt.Printf("%v", paramValue)
-      }
-      fmt.Printf(")\n\tif result != %v {\n\t\tt.Error(\"Failed\")\n\t}\n}\n\n",
-        results[pathName].(string))
-    }
-  }
+	for functionName, function := range file.Functions {
+		for pathName, path := range function.Paths {
+			fmt.Printf("func Test%s%s(t *testing.T) {\n", functionName, pathName)
+			fmt.Printf("\tresult := %s(", functionName)
+			for _, paramValue := range path.Params {
+				fmt.Printf("%v", paramValue)
+			}
+			fmt.Printf(")\n\tif result != %v {\n\t\tt.Error(\"Failed\")\n\t}\n}\n\n",
+				results[pathName].(string))
+		}
+	}
 }
 
 func writeString(fo *os.File, str string) {
-  if _, err := fo.Write([]byte(str)); err != nil {
-    panic(err)
-  }
+	if _, err := fo.Write([]byte(str)); err != nil {
+		panic(err)
+	}
 }
 
 func generateIntropection(lines []string, file *File) map[string]interface{} {
 	tmpFile := "tests/tmp.go"
-  fo, err := os.Create(tmpFile)
-  if err != nil {
-      panic(err)
-  }
-  defer func() {
-    if err := fo.Close(); err != nil {
-      panic(err)
-    }
-  }()
+	fo, err := os.Create(tmpFile)
+	if err != nil {
+		panic(err)
+	}
+	defer func() {
+		if err := fo.Close(); err != nil {
+			panic(err)
+		}
+	}()
 
-  writeString(fo, lines[0] + "\n")
-  writeString(fo, "import (\n\t\"encoding/json\"\n\t\"os\"\n)\n")
-  for _, line := range lines[1:] {
-    writeString(fo, line + "\n")
-  }
-  writeString(fo, "\nfunc main() {\n")
+	writeString(fo, lines[0]+"\n")
+	writeString(fo, "import (\n\t\"encoding/json\"\n\t\"os\"\n)\n")
+	for _, line := range lines[1:] {
+		writeString(fo, line+"\n")
+	}
+	writeString(fo, "\nfunc main() {\n")
 
-  writeString(fo, "\tresults := make(map[string]string)\n")
-  writeString(fo, "\tvar b []byte\n")
-  for functionName, function := range file.Functions {
-    for pathName, path := range function.Paths {
-      writeString(fo, fmt.Sprintf("\tb, _ = json.Marshal(%s(", functionName))
-      for _, paramValue := range path.Params {
-        writeString(fo, fmt.Sprintf("%v", paramValue))
-      }
-      writeString(fo, "))\n")
-      writeString(fo, fmt.Sprintf("\tresults[\"%s:%s\"] = string(b)\n",
+	writeString(fo, "\tresults := make(map[string]string)\n")
+	writeString(fo, "\tvar b []byte\n")
+	for functionName, function := range file.Functions {
+		for pathName, path := range function.Paths {
+			writeString(fo, fmt.Sprintf("\tb, _ = json.Marshal(%s(", functionName))
+			for _, paramValue := range path.Params {
+				writeString(fo, fmt.Sprintf("%v", paramValue))
+			}
+			writeString(fo, "))\n")
+			writeString(fo, fmt.Sprintf("\tresults[\"%s:%s\"] = string(b)\n",
 				functionName, pathName))
-    }
-  }
-  writeString(fo, "\n\tb, _ = json.MarshalIndent(results, \"\", \"  \")\n")
+		}
+	}
+	writeString(fo, "\n\tb, _ = json.MarshalIndent(results, \"\", \"  \")\n")
 	writeString(fo, "\tos.Stdout.Write(b)\n")
-  writeString(fo, "}\n")
+	writeString(fo, "}\n")
 
-  out, err := exec.Command("go", "run", tmpFile).Output()
-  if err != nil {
-    panic(err)
-  }
+	out, err := exec.Command("go", "run", tmpFile).Output()
+	if err != nil {
+		panic(err)
+	}
 
-  var results map[string]interface{}
-  if err = json.Unmarshal(out, &results); err != nil {
-    panic(err)
-  }
+	var results map[string]interface{}
+	err = json.Unmarshal(out, &results)
+	check(err)
 
 	for functionName, function := range file.Functions {
 		for pathName := range function.Paths {
 			ref := file.Functions[functionName].Paths[pathName]
-			result := results[functionName + ":" + pathName].(string)
+			result := results[functionName+":"+pathName].(string)
 			switch function.Type {
-			case "int":
+			case "int", "int8", "int16", "int32", "int64",
+				"uint8", "uint16", "uint32", "uint64":
 				ref.Result = atoi(result)
 			case "bool":
 				ref.Result = atob(result)
 			case "float32", "float64":
 				ref.Result = atof(result)
+			case "complex64", "complex128":
+				notSupported(function.Type)
 			default:
 				panic(function.Type)
 			}
@@ -429,7 +435,7 @@ func generateIntropection(lines []string, file *File) map[string]interface{} {
 
 	os.Remove(tmpFile)
 
-  return results
+	return results
 }
 
 func main() {
@@ -471,14 +477,14 @@ func main() {
 		out.Functions[decl.(*ast.FuncDecl).Name.Name] = Function{name, params, paths}
 	}
 
-  generateIntropection(lines, &out)
+	generateIntropection(lines, &out)
 
 	b, err := json.MarshalIndent(out, "", "  ")
 	if err != nil {
 		fmt.Println("error:", err)
 	}
 	os.Stdout.Write(b)
-  fmt.Printf("\n\n")
+	fmt.Printf("\n\n")
 
-  //generateTests(results, &out)
+	//generateTests(results, &out)
 }

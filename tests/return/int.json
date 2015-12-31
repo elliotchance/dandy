@@ -1,6 +1,6 @@
 {
   "Functions": {
-    "A": {
+    "Int": {
       "Type": "int",
       "Args": {},
       "Paths": {
@@ -10,6 +10,110 @@
           ],
           "Params": {},
           "Result": 100
+        }
+      }
+    },
+    "Int16": {
+      "Type": "int16",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "12: return"
+          ],
+          "Params": {},
+          "Result": 102
+        }
+      }
+    },
+    "Int32": {
+      "Type": "int32",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "16: return"
+          ],
+          "Params": {},
+          "Result": 103
+        }
+      }
+    },
+    "Int64": {
+      "Type": "int64",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "20: return"
+          ],
+          "Params": {},
+          "Result": 104
+        }
+      }
+    },
+    "Int8": {
+      "Type": "int8",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "8: return"
+          ],
+          "Params": {},
+          "Result": 101
+        }
+      }
+    },
+    "Uint16": {
+      "Type": "uint16",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "28: return"
+          ],
+          "Params": {},
+          "Result": 106
+        }
+      }
+    },
+    "Uint32": {
+      "Type": "uint32",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "32: return"
+          ],
+          "Params": {},
+          "Result": 107
+        }
+      }
+    },
+    "Uint64": {
+      "Type": "uint64",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "36: return"
+          ],
+          "Params": {},
+          "Result": 108
+        }
+      }
+    },
+    "Uint8": {
+      "Type": "uint8",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "24: return"
+          ],
+          "Params": {},
+          "Result": 105
         }
       }
     }
