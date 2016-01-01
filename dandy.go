@@ -18,17 +18,29 @@ import (
 )
 
 func decodeJsonString(theJson string) string {
-	var realString string
-	err := json.Unmarshal([]byte(theJson), &realString)
+	var result string
+	err := json.Unmarshal([]byte(theJson), &result)
 	check(err)
 
-	return realString
+	return result
 }
 
-// Convert the rawValue which will be a string into a value for the type
-// provided. For example, if the rawValue is "123" and we need a uint32 it would
-// return 123 as an integer.
+func decodeJsonArray(theJson string) []interface{} {
+	var result []interface{}
+	err := json.Unmarshal([]byte(theJson), &result)
+	check(err)
+
+	return result
+}
+
+// Convert the rawValue which will be a JSON-encoded string into a value for the
+// type provided. For example, if the rawValue is "123" and we need a uint32 it
+// would return 123 as an integer.
 func getValueForType(typeName string, rawValue string) interface{} {
+	if typeName[:2] == "[]" {
+		return decodeJsonArray(rawValue)
+	}
+
 	switch typeName {
 	case "int", "uint", "uintptr", "byte", "rune",
 		"int8", "int16", "int32", "int64",
@@ -476,13 +488,25 @@ func main() {
 	}
 
 	// Print the AST.
-	//ast.Print(fset, f)
+	// ast.Print(fset, f)
+	// panic("ok")
 
 	out := File{}
 	out.Functions = make(map[string]Function)
 
 	for _, decl := range f.Decls {
-		name := decl.(*ast.FuncDecl).Type.Results.List[0].Type.(*ast.Ident).Name
+		returnType := decl.(*ast.FuncDecl).Type.Results.List[0].Type
+		var name string
+		switch rt := returnType.(type) {
+		case *ast.Ident:
+			// This would be something simple like "int32"
+			name = rt.Name
+		case *ast.ArrayType:
+			// This would be an array/slice type like "[]int32"
+			name = "[]" + rt.Elt.(*ast.Ident).Name
+		default:
+			panic(rt)
+		}
 
 		path := newPath()
 		params := make(map[string]string)

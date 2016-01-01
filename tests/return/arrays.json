@@ -1,0 +1,37 @@
+{
+  "Functions": {
+    "IntArray": {
+      "Type": "[]int",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "4: return"
+          ],
+          "Params": {},
+          "Result": [
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "StringArray": {
+      "Type": "[]string",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "8: return"
+          ],
+          "Params": {},
+          "Result": [
+            "foo",
+            "bar"
+          ]
+        }
+      }
+    }
+  }
+}
