@@ -1,0 +1,228 @@
+{
+  "Functions": {
+    "GreaterThanEqualFloat": {
+      "Type": "bool",
+      "Args": {
+        "x": "float32"
+      },
+      "Paths": {
+        "": {
+          "Steps": [
+            "62: if x \u003e= 0.5 {",
+            "66: return"
+          ],
+          "Params": {
+            "x": 0
+          },
+          "Result": false
+        },
+        "XIsGreaterThanOrEqual0.5": {
+          "Steps": [
+            "62: if x \u003e= 0.5 {",
+            "63: return"
+          ],
+          "Params": {
+            "x": 1
+          },
+          "Result": true
+        }
+      }
+    },
+    "GreaterThanEqualInt": {
+      "Type": "bool",
+      "Args": {
+        "x": "int"
+      },
+      "Paths": {
+        "": {
+          "Steps": [
+            "54: if x \u003e= 0 {",
+            "58: return"
+          ],
+          "Params": {
+            "x": -1
+          },
+          "Result": false
+        },
+        "XIsGreaterThanOrEqual0": {
+          "Steps": [
+            "54: if x \u003e= 0 {",
+            "55: return"
+          ],
+          "Params": {
+            "x": 0
+          },
+          "Result": true
+        }
+      }
+    },
+    "GreaterThanFloat": {
+      "Type": "bool",
+      "Args": {
+        "x": "float32"
+      },
+      "Paths": {
+        "": {
+          "Steps": [
+            "30: if x \u003e 0.5 {",
+            "34: return"
+          ],
+          "Params": {
+            "x": 0
+          },
+          "Result": false
+        },
+        "XIsGreaterThan0.5": {
+          "Steps": [
+            "30: if x \u003e 0.5 {",
+            "31: return"
+          ],
+          "Params": {
+            "x": 1
+          },
+          "Result": true
+        }
+      }
+    },
+    "GreaterThanInt": {
+      "Type": "bool",
+      "Args": {
+        "x": "int"
+      },
+      "Paths": {
+        "": {
+          "Steps": [
+            "22: if x \u003e 0 {",
+            "26: return"
+          ],
+          "Params": {
+            "x": 0
+          },
+          "Result": false
+        },
+        "XIsGreaterThan0": {
+          "Steps": [
+            "22: if x \u003e 0 {",
+            "23: return"
+          ],
+          "Params": {
+            "x": 1
+          },
+          "Result": true
+        }
+      }
+    },
+    "LessThanEqualFloat": {
+      "Type": "bool",
+      "Args": {
+        "x": "float32"
+      },
+      "Paths": {
+        "": {
+          "Steps": [
+            "46: if x \u003c= 0.5 {",
+            "50: return"
+          ],
+          "Params": {
+            "x": 1
+          },
+          "Result": false
+        },
+        "XIsLessThanOrEqual0.5": {
+          "Steps": [
+            "46: if x \u003c= 0.5 {",
+            "47: return"
+          ],
+          "Params": {
+            "x": 0
+          },
+          "Result": true
+        }
+      }
+    },
+    "LessThanEqualInt": {
+      "Type": "bool",
+      "Args": {
+        "x": "int"
+      },
+      "Paths": {
+        "": {
+          "Steps": [
+            "38: if x \u003c= 0 {",
+            "42: return"
+          ],
+          "Params": {
+            "x": 1
+          },
+          "Result": false
+        },
+        "XIsLessThanOrEqual0": {
+          "Steps": [
+            "38: if x \u003c= 0 {",
+            "39: return"
+          ],
+          "Params": {
+            "x": 0
+          },
+          "Result": true
+        }
+      }
+    },
+    "LessThanFloat": {
+      "Type": "bool",
+      "Args": {
+        "x": "float32"
+      },
+      "Paths": {
+        "": {
+          "Steps": [
+            "14: if x \u003c 0.5 {",
+            "18: return"
+          ],
+          "Params": {
+            "x": 1
+          },
+          "Result": false
+        },
+        "XIsLessThan0.5": {
+          "Steps": [
+            "14: if x \u003c 0.5 {",
+            "15: return"
+          ],
+          "Params": {
+            "x": 0
+          },
+          "Result": true
+        }
+      }
+    },
+    "LessThanInt": {
+      "Type": "bool",
+      "Args": {
+        "x": "int"
+      },
+      "Paths": {
+        "": {
+          "Steps": [
+            "6: if x \u003c 0 {",
+            "10: return"
+          ],
+          "Params": {
+            "x": 0
+          },
+          "Result": false
+        },
+        "XIsLessThan0": {
+          "Steps": [
+            "6: if x \u003c 0 {",
+            "7: return"
+          ],
+          "Params": {
+            "x": -1
+          },
+          "Result": true
+        }
+      }
+    }
+  }
+}

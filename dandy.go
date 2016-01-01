@@ -396,6 +396,10 @@ func getConditionDescription(x interface{}, isTrue bool) string {
 			word = "IsLessThan"
 		case token.GTR:
 			word = "IsGreaterThan"
+		case token.LEQ:
+			word = "IsLessThanOrEqual"
+		case token.GEQ:
+			word = "IsGreaterThanOrEqual"
 		default:
 			panic(y.Op)
 		}
@@ -436,6 +440,14 @@ All:
 				case ">":
 					p1.min = value
 					p1.impossible = value
+					p2.max = value
+				case "<=":
+					p1.max = value
+					p2.impossible = value
+					p2.min = value
+				case ">=":
+					p1.min = value
+					p2.impossible = value
 					p2.max = value
 				default:
 					panic(e.Op)
