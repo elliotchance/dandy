@@ -1,0 +1,60 @@
+{
+  "Functions": {
+    "LessThanFloat": {
+      "Type": "bool",
+      "Args": {
+        "x": "float32"
+      },
+      "Paths": {
+        "": {
+          "Steps": [
+            "12: if x \u003c 0.5 {",
+            "16: return"
+          ],
+          "Params": {
+            "x": 1
+          },
+          "Result": false
+        },
+        "XIsLessThan0.5": {
+          "Steps": [
+            "12: if x \u003c 0.5 {",
+            "13: return"
+          ],
+          "Params": {
+            "x": 0
+          },
+          "Result": true
+        }
+      }
+    },
+    "LessThanInt": {
+      "Type": "bool",
+      "Args": {
+        "x": "int"
+      },
+      "Paths": {
+        "": {
+          "Steps": [
+            "4: if x \u003c 0 {",
+            "8: return"
+          ],
+          "Params": {
+            "x": 0
+          },
+          "Result": false
+        },
+        "XIsLessThan0": {
+          "Steps": [
+            "4: if x \u003c 0 {",
+            "5: return"
+          ],
+          "Params": {
+            "x": -1
+          },
+          "Result": true
+        }
+      }
+    }
+  }
+}
