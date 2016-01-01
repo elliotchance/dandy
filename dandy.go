@@ -17,6 +17,23 @@ import (
 	"time"
 )
 
+func getTypeDescription(expr ast.Expr) string {
+	switch rt := expr.(type) {
+	case *ast.Ident:
+		// This would be something simple like "int32"
+		return rt.Name
+	case *ast.ArrayType:
+		// This would be an array/slice type like "[]int32"
+		return "[]" + getTypeDescription(rt.Elt)
+	case *ast.MapType:
+		// This would be something like "map[string]int"
+		return "map[" + getTypeDescription(rt.Key) + "]" +
+			getTypeDescription(rt.Value)
+	default:
+		panic(rt)
+	}
+}
+
 func decodeJsonString(theJson string) string {
 	var result string
 	err := json.Unmarshal([]byte(theJson), &result)
@@ -33,12 +50,24 @@ func decodeJsonArray(theJson string) []interface{} {
 	return result
 }
 
+func decodeJsonObject(theJson string) map[string]interface{} {
+	var result map[string]interface{}
+	err := json.Unmarshal([]byte(theJson), &result)
+	check(err)
+
+	return result
+}
+
 // Convert the rawValue which will be a JSON-encoded string into a value for the
 // type provided. For example, if the rawValue is "123" and we need a uint32 it
 // would return 123 as an integer.
 func getValueForType(typeName string, rawValue string) interface{} {
-	if typeName[:2] == "[]" {
+	if strings.HasPrefix(typeName, "[]") {
 		return decodeJsonArray(rawValue)
+	}
+
+	if strings.HasPrefix(typeName, "map[") {
+		return decodeJsonObject(rawValue)
 	}
 
 	switch typeName {
@@ -289,6 +318,12 @@ func getLineNumber(fset *token.FileSet, x interface{}) string {
 		return getLineNumber(fset, y.Cond)
 	case *ast.BinaryExpr:
 		return getLineNumber(fset, y.X)
+	case *ast.AssignStmt:
+		return getLineNumber(fset, y.Lhs)
+	case []ast.Expr:
+		return getLineNumber(fset, y[0])
+	case *ast.IndexExpr:
+		return getLineNumber(fset, y.X)
 	default:
 		panic(y)
 	}
@@ -380,8 +415,10 @@ All:
 		case *ast.ReturnStmt:
 			path.Steps = append(path.Steps, lineNumber+": return")
 			break All
+		case *ast.AssignStmt:
+			// Do nothing here. We do not need to explain lines that arn't important
 		default:
-			panic("oh noes")
+			panic(s)
 		}
 	}
 
@@ -496,17 +533,7 @@ func main() {
 
 	for _, decl := range f.Decls {
 		returnType := decl.(*ast.FuncDecl).Type.Results.List[0].Type
-		var name string
-		switch rt := returnType.(type) {
-		case *ast.Ident:
-			// This would be something simple like "int32"
-			name = rt.Name
-		case *ast.ArrayType:
-			// This would be an array/slice type like "[]int32"
-			name = "[]" + rt.Elt.(*ast.Ident).Name
-		default:
-			panic(rt)
-		}
+		name := getTypeDescription(returnType)
 
 		path := newPath()
 		params := make(map[string]string)

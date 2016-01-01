@@ -1,0 +1,20 @@
+{
+  "Functions": {
+    "Map1": {
+      "Type": "map[string]int",
+      "Args": {},
+      "Paths": {
+        "": {
+          "Steps": [
+            "7: return"
+          ],
+          "Params": {},
+          "Result": {
+            "bar": 456,
+            "foo": 123
+          }
+        }
+      }
+    }
+  }
+}

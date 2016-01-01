@@ -1,9 +1,9 @@
 package main
 
 func True() bool {
-  return true
+	return true
 }
 
 func False() bool {
-  return false
+	return false
 }

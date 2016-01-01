@@ -4,7 +4,7 @@ package main
 // JSON. The actual result comes out blank.
 
 func Complex64() complex64 {
-  return complex(1.2, 3.4)
+	return complex(1.2, 3.4)
 }
 
 // Since we cannot guarentee which order the functions will be processed in I

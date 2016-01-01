@@ -1,9 +1,9 @@
 package main
 
 func String() string {
-  return "hello"
+	return "hello"
 }
 
 func StringWithEscapes() string {
-  return "hel\"lo"
+	return "hel\"lo"
 }
